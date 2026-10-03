@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Teacher {
+  id               Int               @id @default(autoincrement())
+  name             String            @db.VarChar(120)
+  attendanceRecord AttendanceRecord[]
+
+  @@map("teachers")
+}
+
+model Course {
+  id               Int               @id @default(autoincrement())
+  name             String            @db.VarChar(120)
+  students         Student[]
+  attendanceRecord AttendanceRecord[]
+
+  @@map("courses")
+}
+
+model Student {
+  id               Int               @id @default(autoincrement())
+  name             String            @db.VarChar(120)
+  courseId         Int
+  course           Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  attendanceDetail AttendanceDetail[]
+
+  @@map("students")
+}
+
+model AttendanceRecord {
+  id          Int               @id @default(autoincrement())
+  teacherId   Int
+  courseId    Int
+  createdAt   DateTime          @default(now())
+  teacher     Teacher           @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  course      Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  details     AttendanceDetail[]
+
+  @@map("attendance_records")
+}
+
+model AttendanceDetail {
+  id                 Int               @id @default(autoincrement())
+  attendanceRecordId Int
+  studentId          Int
+  present            Boolean           @default(false)
+  attendanceRecord  AttendanceRecord @relation(fields: [attendanceRecordId], references: [id], onDelete: Cascade)
+  student            Student           @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([attendanceRecordId, studentId])
+  @@map("attendance_details")
+}
