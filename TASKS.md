@@ -16,13 +16,13 @@
 
 ---
 
-## Fase 1 - Documentaci�n
+## Fase 1 - Documentacion
 
 - [x] Crear y revisar `README.md`.
 - [x] Crear y revisar `PRD.md`.
 - [x] Crear y revisar `RULES.md`.
 - [x] Crear este archivo `TASKS.md`.
-- [x] Verificar que la documentaci�n sea coherente entre s�.
+- [x] Verificar que la documentacion sea coherente entre so.
 - [x] Verificar que la IA utilice `PRD.md`, `RULES.md` y `TASKS.md` (este archivo) como referencia durante el desarrollo.
 
 ---
@@ -43,40 +43,40 @@
 
 ## Fase 3 - Interfaz de usuario
 
-- [ ] Crear la estructura principal de la aplicaci�n.
+- [ ] Crear la estructura principal de la aplicacion.
 - [ ] Crear la vista del curso y listado de estudiantes.
 - [ ] Implementar el control visual para marcar la asistencia.
-- [ ] Implementar la visualizaci�n del estado de cada estudiante.
-- [ ] Crear la acci�n para finalizar la toma de asistencia.
+- [ ] Implementar la visualizacion del estado de cada estudiante.
+- [ ] Crear la accion para finalizar la toma de asistencia.
 - [ ] Crear la vista de consulta de registros de asistencia.
 - [ ] Aplicar Tailwind CSS y los componentes necesarios de shadcn/ui.
-- [ ] Implementar el dise�o responsive.
+- [ ] Implementar el diseoo responsive.
 - [ ] Verificar que la interfaz corresponda con las funciones definidas en `PRD.md`.
 
 ---
 
-## Fase 4 - L�gica e integraci�n
+## Fase 4 - Logica e integracion
 
-- [ ] Implementar la obtenci�n del curso y sus estudiantes.
+- [ ] Implementar la obtencion del curso y sus estudiantes.
 - [ ] Implementar el registro de asistencia.
 - [ ] Implementar el almacenamiento de la fecha y hora de la toma de asistencia.
 - [ ] Asociar correctamente docente, curso, registro de asistencia y estudiantes.
 - [ ] Implementar la consulta de registros de asistencia.
 - [ ] Implementar las validaciones necesarias.
-- [ ] Verificar la comunicaci�n entre interfaz, l�gica de aplicaci�n y base de datos.
+- [ ] Verificar la comunicacion entre interfaz, logica de aplicacion y base de datos.
 - [ ] Verificar que no se generen registros duplicados o datos incoherentes.
 
 ---
 
-## Fase 5 - Verificaci�n final
+## Fase 5 - Verificacion final
 
 - [ ] Verificar el flujo completo de toma de asistencia.
 - [ ] Verificar el flujo de consulta de asistencia.
 - [ ] Verificar la integridad de los datos almacenados.
 - [ ] Verificar la ausencia de registros duplicados.
-- [ ] Verificar que los datos obligatorios no sean nulos o vac�os.
+- [ ] Verificar que los datos obligatorios no sean nulos o vacoos.
 - [ ] Verificar el comportamiento responsive.
-- [ ] Verificar los criterios de aceptaci�n definidos en `PRD.md`.
+- [ ] Verificar los criterios de aceptacion definidos en `PRD.md`.
 - [ ] Corregir los errores encontrados sin modificar el alcance del proyecto.
 - [ ] Actualizar `MEMORY.md` (archivo de memoria del proyecto) con el estado final.
 - [ ] Actualizar `TASKS.md` (este archivo) indicando las tareas completadas.
