@@ -2,25 +2,25 @@
 
 ## Estado actual
 
-La base de datos del proyecto quedó levantada con Docker y la estructura inicial quedó aplicada con Prisma.
+La base de datos del proyecto esta levantada con Docker y su estructura inicial esta aplicada con Prisma.
 
-Se confirmó lo siguiente:
-
-* Node.js y npm están disponibles en el entorno local.
-* Next.js, TypeScript, Tailwind CSS y shadcn/ui quedaron configurados.
-* Prisma quedó configurado y generado correctamente.
-* El contenedor MySQL quedó corriendo en el puerto `3307`.
-* La migración inicial quedó aplicada sobre la base de datos `attendance_db`.
-* El seed de datos de prueba quedó ejecutado con un docente, un curso, seis estudiantes y un registro de asistencia de ejemplo.
-* La aplicación compila y responde en modo desarrollo en `http://localhost:3000`.
+* Node.js y npm estan disponibles en el entorno local.
+* Next.js, TypeScript, Tailwind CSS y shadcn/ui estan configurados.
+* Prisma esta configurado y generado correctamente.
+* MySQL esta corriendo en el puerto `3307`.
+* La migracion inicial esta aplicada sobre `attendance_db`.
+* Los datos iniciales fueron sembrados anteriormente. El usuario modifico despues los registros de asistencia; conservar el estado actual y no volver a ejecutar el seed sin autorizacion, ya que este elimina y recrea filas.
+* La Fase 3 esta completada: interfaz principal, vistas de cursos y estudiantes, toma interactiva de asistencia e historial.
+* El build de produccion y la revision responsive de las pantallas principales se completaron correctamente.
 
 ## Cambios realizados
 
-* Se creó la estructura inicial del esquema Prisma con docentes, cursos, estudiantes, registros y detalles de asistencia.
-* Se generó la migración inicial de la base de datos.
-* Se cargó un seed con datos de prueba coherentes con el PRD.
-* Se dejó configurado el acceso a la base de datos en local para continuar con la capa de interfaz y lógica de negocio.
+* Se creo el esquema Prisma para docentes, cursos, estudiantes, registros y detalles de asistencia.
+* Se genero y aplico la migracion inicial.
+* Se implementaron las vistas de inicio, cursos, estudiantes y asistencias.
+* La toma permite marcar presentes, ver el conteo y revisar un resumen antes de finalizar.
+* La seleccion de asistencia todavia no persiste cambios en la base de datos.
 
 ## Siguiente paso recomendado
 
-Continuar con la implementación de la interfaz de usuario y la lógica de asistencia según la fase 3 y 4 del proyecto.
+Continuar con la Fase 4: integrar la toma de asistencia con Prisma, persistir docente, curso, fecha, hora y estado por estudiante, e implementar la consulta de los registros almacenados. Respetar los datos de prueba actuales y no ejecutar el seed sin autorizacion.
