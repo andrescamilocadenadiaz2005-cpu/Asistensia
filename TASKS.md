@@ -43,14 +43,14 @@
 
 ## Fase 3 - Interfaz de usuario
 
-- [ ] Crear la estructura principal de la aplicacion.
+- [ ] Crear la estructura principal de la aplicacion(inlcuye botones que permitan ir a las vistas de cursos, listado de estudiantes y registro de asistencias).
 - [ ] Crear la vista del curso y listado de estudiantes.
 - [ ] Implementar el control visual para marcar la asistencia.
 - [ ] Implementar la visualizacion del estado de cada estudiante.
 - [ ] Crear la accion para finalizar la toma de asistencia.
 - [ ] Crear la vista de consulta de registros de asistencia.
 - [ ] Aplicar Tailwind CSS y los componentes necesarios de shadcn/ui.
-- [ ] Implementar el diseoo responsive.
+- [ ] Implementar el diseño responsive.
 - [ ] Verificar que la interfaz corresponda con las funciones definidas en `PRD.md`.
 
 ---
@@ -64,7 +64,7 @@
 - [ ] Implementar la consulta de registros de asistencia.
 - [ ] Implementar las validaciones necesarias.
 - [ ] Verificar la comunicacion entre interfaz, logica de aplicacion y base de datos.
-- [ ] Verificar que no se generen registros duplicados o datos incoherentes.
+- [ ] Verificar que no se generen registros duplicados o datos incoherentes(si ya se hizo un resgistro de asistencia durante el dia, no se puede volver a realizar otra vez a menos que sea al dia siguiente).
 
 ---
 
