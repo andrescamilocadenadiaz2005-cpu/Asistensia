@@ -1,0 +1,131 @@
+COMANDOS PARA TRABAJAR CON EL SISTEMA DE ASISTENCIA
+===================================================
+
+Abrir la terminal de PowerShell en la carpeta del proyecto:
+
+cd "C:\Users\Pc\OneDrive\Documentos\desarrollo movil\Listado"
+
+INICIAR LA APLICACION
+---------------------
+
+1. Comprobar que Docker Desktop este abierto y ejecutandose.
+2. Iniciar MySQL:
+
+docker compose up -d
+
+3. Comprobar que MySQL este activo:
+
+docker compose ps
+
+4. Iniciar Next.js en modo desarrollo:
+
+npm run dev
+
+5. Abrir en el navegador:
+
+http://localhost:3000
+
+La terminal que ejecuta "npm run dev" debe permanecer abierta. Para detener el
+servidor, presiona Ctrl+C en esa terminal. La base de datos permanece activa.
+
+PANTALLAS PRINCIPALES
+---------------------
+
+Inicio:       http://localhost:3000/
+Cursos:       http://localhost:3000/courses
+Estudiantes:  http://localhost:3000/students
+Asistencias:  http://localhost:3000/attendance
+
+Para levantar asistencia de un curso concreto:
+
+http://localhost:3000/attendance/new?courseId=1
+
+Reemplaza 1 por el ID del curso que quieras consultar. Los IDs se pueden revisar
+en Prisma Studio.
+
+INSTALACION INICIAL O DESPUES DE CLONAR EL REPOSITORIO
+-------------------------------------------------------
+
+Entrar a la carpeta del proyecto:
+
+cd "C:\Users\Pc\OneDrive\Documentos\desarrollo movil\Listado"
+
+Instalar dependencias:
+
+npm install
+
+Crear el archivo local .env copiando el ejemplo (solo si .env no existe):
+
+Copy-Item .env.example .env
+
+Iniciar MySQL y aplicar las migraciones ya existentes:
+
+docker compose up -d
+npx prisma migrate dev
+
+No copies el ejemplo encima de un .env ya configurado; conserva la configuracion
+local existente. DATABASE_URL debe apuntar al puerto 3307 de MySQL.
+
+COMANDOS UTILES
+---------------
+
+npm run dev
+Inicia Next.js en modo desarrollo, normalmente en http://localhost:3000.
+
+npm run build
+Compila y verifica la aplicacion como build de produccion.
+
+npm run start
+Sirve el build de produccion; primero se debe ejecutar "npm run build".
+
+npx prisma validate
+Valida el esquema Prisma sin aplicar cambios en la base de datos.
+
+npx prisma generate
+Genera el cliente Prisma despues de cambios al esquema.
+
+npx prisma migrate dev
+Aplica migraciones pendientes en la base local. Revisa el esquema y la base antes
+de usarlo; puede modificar la estructura de la base de datos.
+
+npm run prisma:studio
+Abre Prisma Studio para explorar y editar las tablas desde el navegador.
+Ten cuidado al modificar o borrar registros.
+
+docker compose logs -f mysql
+Muestra continuamente los logs del contenedor MySQL. Ctrl+C termina la vista.
+
+docker compose stop
+Detiene MySQL sin eliminar el contenedor ni sus datos.
+
+docker compose start
+Vuelve a iniciar los servicios que se detuvieron con "docker compose stop".
+
+docker compose down
+Detiene y elimina los contenedores de Compose, pero conserva el volumen con los
+datos de MySQL.
+
+IMPORTANTE SOBRE LOS DATOS
+--------------------------
+
+No ejecutes "npm run prisma:seed" sin revisar primero prisma/seed.ts y confirmar
+que quieres reemplazar los datos de desarrollo. El seed actual elimina y vuelve
+a crear filas de varias tablas, por lo que puede borrar datos que hayas editado.
+
+No uses "docker compose down -v" salvo que quieras borrar definitivamente el
+volumen de MySQL y todos los datos guardados en esa base.
+
+Para registrar una asistencia se usa la pantalla del curso, se marcan presentes,
+se revisa el resumen y se selecciona "Guardar asistencia". El sistema permite
+una toma por curso por dia, segun la fecha local de Bogota.
+
+NOTAS
+-----
+
+- MySQL se publica en el puerto local 3307 para evitar conflicto con otra
+  instalacion de MySQL en el puerto 3306.
+- Si el puerto 3000 ya esta ocupado, Next.js puede iniciar en otro puerto; usa
+  la URL que indique la terminal.
+- "npm run lint" puede abrir un asistente de configuracion de ESLint porque el
+  proyecto aun no tiene una configuracion propia. No es necesario para levantar
+  la pagina.
