@@ -339,6 +339,28 @@ select:focus-visible {
   opacity: 0.55;
 }
 
+.spin {
+  animation: spin 900ms linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.form-error {
+  width: min(100%, 590px);
+  margin: 15px 0 0 !important;
+  border: 1px solid #f0d6d3;
+  border-radius: 9px;
+  background: #fff8f7;
+  padding: 10px 12px;
+  color: #a33f35 !important;
+  font-size: 11px !important;
+  text-align: left;
+}
+
 .button-secondary {
   border-color: #e3e9e4;
   background: white;

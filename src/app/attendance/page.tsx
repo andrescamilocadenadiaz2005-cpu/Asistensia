@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ClipboardList, Clock3, Users } from "lucide-react";
+import { attendanceTimeZone } from "@/lib/attendance-date";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +58,7 @@ export default async function AttendancePage() {
                         <span className="date-cell">
                           <Clock3 aria-hidden="true" size={15} />
                           {new Intl.DateTimeFormat("es-CO", {
+                            timeZone: attendanceTimeZone,
                             dateStyle: "medium",
                             timeStyle: "short",
                           }).format(record.createdAt)}

@@ -2,7 +2,15 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, Check, CheckCircle2, UserRound } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  CheckCircle2,
+  LoaderCircle,
+  UserRound,
+} from "lucide-react";
+import { attendanceTimeZone } from "@/lib/attendance-date";
 
 type AttendanceChecklistProps = {
   course: { id: number; name: string };
@@ -20,15 +28,76 @@ export function AttendanceChecklist({
   const [teacherId, setTeacherId] = useState(String(selectedTeacherId));
   const [presentIds, setPresentIds] = useState<number[]>([]);
   const [isReviewing, setIsReviewing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [savedAttendance, setSavedAttendance] = useState<{
+    id: number;
+    createdAt: string;
+  } | null>(null);
   const presentSet = useMemo(() => new Set(presentIds), [presentIds]);
   const presentCount = presentIds.length;
 
   function toggleStudent(studentId: number) {
+    setErrorMessage("");
     setPresentIds((current) =>
       current.includes(studentId)
         ? current.filter((id) => id !== studentId)
         : [...current, studentId],
     );
+  }
+
+  async function saveAttendance() {
+    if (isSaving) {
+      return;
+    }
+
+    setErrorMessage("");
+    setIsSaving(true);
+
+    try {
+      const response = await fetch("/api/attendance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          courseId: course.id,
+          teacherId: Number(teacherId),
+          presentStudentIds: presentIds,
+        }),
+      });
+      const result: unknown = await response.json();
+
+      if (!response.ok) {
+        const message =
+          typeof result === "object" &&
+          result !== null &&
+          "error" in result &&
+          typeof result.error === "string"
+            ? result.error
+            : "No se pudo guardar la asistencia.";
+        setErrorMessage(message);
+        return;
+      }
+
+      if (
+        typeof result !== "object" ||
+        result === null ||
+        !("id" in result) ||
+        typeof result.id !== "number" ||
+        !("createdAt" in result) ||
+        typeof result.createdAt !== "string"
+      ) {
+        throw new Error("La respuesta del servidor no contiene el registro guardado.");
+      }
+      setSavedAttendance({ id: result.id, createdAt: result.createdAt });
+      setSavedAttendance({ id: result.id, createdAt: result.createdAt });
+    } catch (error) {
+      console.error("No se pudo completar el guardado de asistencia:", error);
+      setErrorMessage(
+        "Ocurrió un problema al guardar la asistencia. Revisa tu conexión e inténtalo de nuevo.",
+      );
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   if (isReviewing) {
@@ -37,12 +106,33 @@ export function AttendanceChecklist({
         <span className="review-icon">
           <CheckCircle2 aria-hidden="true" size={28} />
         </span>
-        <span className="eyebrow">Revisión completa</span>
-        <h2>La lista está lista para finalizar</h2>
+        <span className="eyebrow">
+          {savedAttendance ? "Asistencia guardada" : "Revisión completa"}
+        </span>
+        <h2>
+          {savedAttendance
+            ? "La toma se registró correctamente"
+            : "Revisa los datos antes de guardar"}
+        </h2>
         <p>
-          {presentCount} de {students.length} estudiantes aparecen como
-          presentes en <strong>{course.name}</strong>. La toma está preparada
-          para conectarse al guardado de base de datos en la fase de integración.
+          {savedAttendance ? (
+            <>
+              La asistencia de <strong>{course.name}</strong> quedó registrada
+              con el número {savedAttendance.id} el{" "}
+              {new Intl.DateTimeFormat("es-CO", {
+                timeZone: attendanceTimeZone,
+                dateStyle: "medium",
+                timeStyle: "short",
+              }).format(new Date(savedAttendance.createdAt))}
+              .
+            </>
+          ) : (
+            <>
+              {presentCount} de {students.length} estudiantes aparecen como
+              presentes en <strong>{course.name}</strong>. Al guardar, se
+              registrará esta selección con la fecha y hora actuales.
+            </>
+          )}
         </p>
         <div className="review-summary">
           <div>
@@ -60,18 +150,48 @@ export function AttendanceChecklist({
             <strong>{students.length - presentCount}</strong>
           </div>
         </div>
+        {errorMessage && (
+          <p className="form-error" role="alert">
+            {errorMessage}
+          </p>
+        )}
         <div className="review-actions">
-          <button
-            className="button button-secondary"
-            onClick={() => setIsReviewing(false)}
-            type="button"
-          >
-            <ArrowLeft aria-hidden="true" size={16} />
-            Volver a la lista
-          </button>
-          <Link className="button button-primary" href="/attendance">
-            Ir al historial <ArrowRight aria-hidden="true" size={16} />
-          </Link>
+          {savedAttendance ? (
+            <>
+              <Link className="button button-secondary" href="/courses">
+                <ArrowLeft aria-hidden="true" size={16} />
+                Volver a cursos
+              </Link>
+              <Link className="button button-primary" href="/attendance">
+                Ir al historial <ArrowRight aria-hidden="true" size={16} />
+              </Link>
+            </>
+          ) : (
+            <>
+              <button
+                className="button button-secondary"
+                disabled={isSaving}
+                onClick={() => setIsReviewing(false)}
+                type="button"
+              >
+                <ArrowLeft aria-hidden="true" size={16} />
+                Volver a la lista
+              </button>
+              <button
+                className="button button-primary"
+                disabled={isSaving}
+                onClick={saveAttendance}
+                type="button"
+              >
+                {isSaving ? (
+                  <LoaderCircle aria-hidden="true" className="spin" size={16} />
+                ) : (
+                  <CheckCircle2 aria-hidden="true" size={16} />
+                )}
+                {isSaving ? "Guardando..." : "Guardar asistencia"}
+              </button>
+            </>
+          )}
         </div>
       </section>
     );
@@ -163,8 +283,8 @@ export function AttendanceChecklist({
         <div className="integration-note">
           <span className="integration-dot" />
           <p>
-            Esta fase permite revisar la selección. El guardado de la toma se
-            conectará en la fase de integración.
+            Cada curso permite una toma de asistencia por día. Al guardarla,
+            quedará disponible en el historial.
           </p>
         </div>
         <button

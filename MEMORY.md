@@ -1,26 +1,28 @@
 # Memoria del proyecto
 
-## Estado actual
+## Estado
 
-La base de datos del proyecto esta levantada con Docker y su estructura inicial esta aplicada con Prisma.
+Las fases 0 a 5 estan completadas.
 
-* Node.js y npm estan disponibles en el entorno local.
-* Next.js, TypeScript, Tailwind CSS y shadcn/ui estan configurados.
-* Prisma esta configurado y generado correctamente.
-* MySQL esta corriendo en el puerto `3307`.
-* La migracion inicial esta aplicada sobre `attendance_db`.
-* Los datos iniciales fueron sembrados anteriormente. El usuario modifico despues los registros de asistencia; conservar el estado actual y no volver a ejecutar el seed sin autorizacion, ya que este elimina y recrea filas.
-* La Fase 3 esta completada: interfaz principal, vistas de cursos y estudiantes, toma interactiva de asistencia e historial.
-* El build de produccion y la revision responsive de las pantallas principales se completaron correctamente.
+* Stack configurado: Next.js, TypeScript, Tailwind CSS, shadcn/ui, Prisma y MySQL con Docker.
+* MySQL se publica en el puerto local `3307`; el esquema de `attendance_db` esta aplicado con Prisma.
+* La interfaz dispone de inicio, cursos, estudiantes, toma de asistencia e historial.
+* La toma guarda docente, curso, fecha/hora y el estado de todos los estudiantes del curso.
+* La regla acordada es una toma por curso y dia, delimitada por la fecha local de Bogota (`America/Bogota`).
+* No ejecutar el seed sin autorizacion: el script elimina y recrea filas.
 
-## Cambios realizados
+## Verificaciones finales
 
-* Se creo el esquema Prisma para docentes, cursos, estudiantes, registros y detalles de asistencia.
-* Se genero y aplico la migracion inicial.
-* Se implementaron las vistas de inicio, cursos, estudiantes y asistencias.
-* La toma permite marcar presentes, ver el conteo y revisar un resumen antes de finalizar.
-* La seleccion de asistencia todavia no persiste cambios en la base de datos.
+* `npm run build` finalizo correctamente.
+* `npx prisma validate` confirmo que el esquema es valido.
+* Se probaron los limites de fecha diaria de Bogota.
+* Se completo un flujo end-to-end temporal desde la interfaz hasta el guardado y la consulta en el historial.
+* Un segundo envio para el mismo curso y dia fue rechazado con HTTP 409.
+* Se verificaron asociaciones, conteos de presentes/ausentes, detalles y ausencia de duplicados u orfandad.
+* Se comprobo la navegacion responsive en viewport movil de 390 px.
+* Las filas y entidades temporales de QA se eliminaron. Los registros existentes se conservaron sin cambios.
+* `npm run lint` muestra el asistente interactivo de configuracion de ESLint porque no hay configuracion definida; no se agrego una configuracion nueva en esta fase.
 
-## Siguiente paso recomendado
+## Siguiente paso
 
-Continuar con la Fase 4: integrar la toma de asistencia con Prisma, persistir docente, curso, fecha, hora y estado por estudiante, e implementar la consulta de los registros almacenados. Respetar los datos de prueba actuales y no ejecutar el seed sin autorizacion.
+La implementacion descrita en `PRD.md` y las fases de `TASKS.md` esta terminada. No hay trabajo pendiente de las fases actuales.

@@ -59,26 +59,30 @@ Nota: el guardado efectivo de la toma de asistencia y su persistencia en la base
 
 ## Fase 4 - Logica e integracion
 
-- [ ] Implementar la obtencion del curso y sus estudiantes.
-- [ ] Implementar el registro de asistencia.
-- [ ] Implementar el almacenamiento de la fecha y hora de la toma de asistencia.
-- [ ] Asociar correctamente docente, curso, registro de asistencia y estudiantes.
-- [ ] Implementar la consulta de registros de asistencia.
-- [ ] Implementar las validaciones necesarias.
-- [ ] Verificar la comunicacion entre interfaz, logica de aplicacion y base de datos.
-- [ ] Verificar que no se generen registros duplicados o datos incoherentes(si ya se hizo un resgistro de asistencia durante el dia, no se puede volver a realizar otra vez a menos que sea al dia siguiente).
+- [x] Implementar la obtencion del curso y sus estudiantes.
+- [x] Implementar el registro de asistencia.
+- [x] Implementar el almacenamiento de la fecha y hora de la toma de asistencia.
+- [x] Asociar correctamente docente, curso, registro de asistencia y estudiantes.
+- [x] Implementar la consulta de registros de asistencia.
+- [x] Implementar las validaciones necesarias.
+- [x] Integrar la interfaz, la logica de aplicacion y la base de datos.
+- [x] Implementar la proteccion contra registros duplicados o datos incoherentes: una toma por curso al dia.
+
+Nota: el flujo positivo end-to-end y la verificacion de integridad se completaron en la Fase 5 usando entidades de QA temporales, que fueron eliminadas al terminar. Los registros existentes se conservaron.
 
 ---
 
 ## Fase 5 - Verificacion final
 
-- [ ] Verificar el flujo completo de toma de asistencia.
-- [ ] Verificar el flujo de consulta de asistencia.
-- [ ] Verificar la integridad de los datos almacenados.
-- [ ] Verificar la ausencia de registros duplicados.
-- [ ] Verificar que los datos obligatorios no sean nulos o vacoos.
-- [ ] Verificar el comportamiento responsive.
-- [ ] Verificar los criterios de aceptacion definidos en `PRD.md`.
-- [ ] Corregir los errores encontrados sin modificar el alcance del proyecto.
-- [ ] Actualizar `MEMORY.md` (archivo de memoria del proyecto) con el estado final.
-- [ ] Actualizar `TASKS.md` (este archivo) indicando las tareas completadas.
+- [x] Verificar el flujo completo de toma de asistencia.
+- [x] Verificar el flujo de consulta de asistencia.
+- [x] Verificar la integridad de los datos almacenados.
+- [x] Verificar la ausencia de registros duplicados.
+- [x] Verificar que los datos obligatorios no sean nulos o vacios.
+- [x] Verificar el comportamiento responsive.
+- [x] Verificar los criterios de aceptacion definidos en `PRD.md`.
+- [x] Corregir los errores encontrados sin modificar el alcance del proyecto.
+- [x] Actualizar `MEMORY.md` (archivo de memoria del proyecto) con el estado final.
+- [x] Actualizar `TASKS.md` (este archivo) indicando las tareas completadas.
+
+Verificacion realizada con `npm run build`, `npx prisma validate`, comprobaciones de limites de fecha de Bogota y una prueba end-to-end temporal de guardado, consulta y rechazo de duplicados. Los datos temporales de QA se eliminaron de forma especifica; los registros existentes se conservaron. `npm run lint` requiere configurar ESLint de forma interactiva y no se cambio esa configuracion durante esta fase.

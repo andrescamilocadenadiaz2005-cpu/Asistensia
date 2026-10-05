@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ClipboardCheck } from "lucide-react";
 import { AttendanceChecklist } from "@/components/attendance-checklist";
+import { attendanceTimeZone, getAttendanceDayRange } from "@/lib/attendance-date";
 import { prisma } from "@/lib/prisma";
 
 type NewAttendancePageProps = {
@@ -56,6 +57,15 @@ export default async function NewAttendancePage({
     );
   }
 
+  const { start, end } = getAttendanceDayRange();
+  const todaysAttendance = await prisma.attendanceRecord.findFirst({
+    where: {
+      courseId: course.id,
+      createdAt: { gte: start, lt: end },
+    },
+    include: { teacher: true },
+  });
+
   return (
     <div className="page-stack">
       <header className="page-heading page-heading-compact">
@@ -71,14 +81,34 @@ export default async function NewAttendancePage({
         <span className="count-pill">{course.students.length} estudiantes</span>
       </header>
 
-      {teachers.length > 0 ? (
-        <AttendanceChecklist
-          course={{ id: course.id, name: course.name }}
-          selectedTeacherId={teachers[0].id}
-          students={course.students.map(({ id, name }) => ({ id, name }))}
-          teachers={teachers}
-        />
-      ) : (
+      {todaysAttendance ? (
+        <section className="content-card review-panel" aria-live="polite">
+          <span className="review-icon">
+            <ClipboardCheck aria-hidden="true" size={28} />
+          </span>
+          <span className="eyebrow">Asistencia registrada hoy</span>
+          <h2>Ya se pasó lista para este curso</h2>
+          <p>
+            {course.name} tiene una toma registrada por{" "}
+            <strong>{todaysAttendance.teacher.name}</strong> a las{" "}
+            {new Intl.DateTimeFormat("es-CO", {
+              timeZone: attendanceTimeZone,
+              dateStyle: "medium",
+              timeStyle: "short",
+            }).format(todaysAttendance.createdAt)}
+            . Podrás registrar una nueva asistencia mañana.
+          </p>
+          <div className="review-actions">
+            <Link className="button button-secondary" href="/courses">
+              <ArrowLeft aria-hidden="true" size={16} />
+              Volver a cursos
+            </Link>
+            <Link className="button button-primary" href="/attendance">
+              Ver historial
+            </Link>
+          </div>
+        </section>
+      ) : teachers.length === 0 ? (
         <div className="content-card empty-state">
           <span className="empty-icon">
             <ClipboardCheck aria-hidden="true" size={22} />
@@ -86,6 +116,21 @@ export default async function NewAttendancePage({
           <h2>No hay docentes registrados</h2>
           <p>Se necesita un docente para asociarlo a la toma de asistencia.</p>
         </div>
+      ) : course.students.length === 0 ? (
+        <div className="content-card empty-state">
+          <span className="empty-icon">
+            <ClipboardCheck aria-hidden="true" size={22} />
+          </span>
+          <h2>Este curso no tiene estudiantes</h2>
+          <p>No es posible preparar una toma de asistencia sin estudiantes.</p>
+        </div>
+      ) : (
+        <AttendanceChecklist
+          course={{ id: course.id, name: course.name }}
+          selectedTeacherId={teachers[0].id}
+          students={course.students.map(({ id, name }) => ({ id, name }))}
+          teachers={teachers}
+        />
       )}
     </div>
   );

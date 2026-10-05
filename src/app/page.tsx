@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, BookOpen, ClipboardCheck, Users } from "lucide-react";
+import { attendanceTimeZone } from "@/lib/attendance-date";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -135,6 +136,7 @@ export default async function HomePage() {
                 <span>
                   {latestAttendance.teacher.name} ·{" "}
                   {new Intl.DateTimeFormat("es-CO", {
+                    timeZone: attendanceTimeZone,
                     dateStyle: "medium",
                     timeStyle: "short",
                   }).format(latestAttendance.createdAt)}
